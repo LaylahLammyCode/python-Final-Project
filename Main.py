@@ -1,4 +1,4 @@
-
+#use (print("--------")) to break up
 import Classes
 from Classes import Customer
 from Classes import Rental
@@ -21,4 +21,33 @@ order.display(total)
 found_customer=my_shop.find_customer(1001)
 print("--------------")
 print("Customer found:",found_customer.last_name)
+#----------
+found_rental=my_shop.find_rental(1)
+print(found_rental.hours)
+#-----------
+found_customer_rentals=my_shop.find_rentals_for_customer(1001)
+print(len(found_customer_rentals))
+#------------
+print("-----------")
+new_customer=my_shop.add_customer("Connor",1001,"513-550-6767")
+new_customer=my_shop.add_customer("Connor",1002,"513-550-6767")
+#-----------
+print("--------------")
+new_order=my_shop.new_rental(1,1001,2,1,2)
+new_order=my_shop.new_rental(3,1001,30,5,2)
+new_order=my_shop.new_rental(4,1001,2,1,2)
+#-------------
+print("--------")
+create_order=my_shop.complete_rental(4)
+create_order=my_shop.complete_rental(4)
+create_order=my_shop.complete_rental(100)
+
+
+#------------
+print("--------")
+my_shop.setup_inventory(50,40)
+print("New updated amount of skis is:",my_shop.skis_in_inventory)
+print("New updated amount of snowboards is",my_shop.snowboards_in_inventory)
+
+#-------------------
 

@@ -1,4 +1,4 @@
-
+#look back at slides to remember append 
 class Customer:
     def __init__(self,last_name,customer_ID,phone_number):
         self.last_name=last_name
@@ -9,6 +9,7 @@ class Customer:
         print("Last Name",self.last_name)
         print("Customer ID:",self.customer_ID)
         print("Phone number:",self.phone_number)
+
         
 class Rental:
     def __init__ (self,rental_id,customer_id,skis=0,snowboards=0,hours=1):
@@ -50,9 +51,78 @@ class Shop:
         self.rental_list=rental_list
         self.total_income=total_income
 
-    def find_customer(self,intCustomerIDtoFind):
+        self.setup_inventory(skis_in_inventory,snowboards_in_inventory)
+        
+    def find_customer(self,Customer_ID_to_find):
         for customer in self.customer_list:
-            if customer.customer_ID == intCustomerIDtoFind:
+            if customer.customer_ID == Customer_ID_to_find:
                 return customer
         return None
+
+    def find_rental(self,Rental_ID):
+        for rental in self.rental_list:
+            if rental.rental_id==Rental_ID:
+                return rental
+        return None
+
+    def find_rentals_for_customer(self,Customer_ID):
+        rentals=[]
+        for rental in self.rental_list:
+            if rental.customer_id==Customer_ID:
+                rentals.append(rental)
+        return rentals
+    
+    def add_customer(self,last_name,customer_ID,phone_number):#cheek for repeats
+        for customer in self.customer_list:
+            if customer.customer_ID==customer_ID:
+                print("Customer already exist")
+                return None
+        #the actual customer
+        new_customer=Customer(last_name,customer_ID,phone_number)
+        self.customer_list.append(new_customer)
+        print("New customer ID is:",customer_ID)
+        return new_customer
+    #-----------
+    def new_rental(self,rental_id,customer_id,skis=0,snowboards=0,hours=1):
+        for rental in self.rental_list:
+            if rental.rental_id==rental_id:
+                print("id alread being used")
+                return None
+
+        if skis>self.skis_in_inventory or snowboards>self.snowboards_in_inventory:
+            print("not enough in inventory")
+            return None
+
+        #the actual Rental
+        self.skis_in_inventory=self.skis_in_inventory-skis
+        self.snowboards_in_inventory=self.snowboards_in_inventory-snowboards
+        created_rental=Rental(rental_id,customer_id,skis,snowboards,hours)
+        self.rental_list.append(created_rental)
+        print("New rental ID is:",rental_id)
+        return created_rental
+    #----------------
+    def complete_rental(self,intRentalIID):#Assignment says to use intRentalIID
+        rental=self.find_rental(intRentalIID)
+
+        if rental==None:
+            print("rental not found")
+            return None
+
+        if rental.isClosed==True:
+            print("rental finished")
+            return None
+
+        rental.return_rental()
+
+        self.skis_in_inventory=self.skis_in_inventory+rental.skis
+        self.snowboards_in_inventory=self.snowboards_in_inventory+rental.snowboards
+        cost=rental.get_total()
+        self.total_income=self.total_income+cost
+        print("Total charge in dollars:",cost)
+        return rental
+
+    def setup_inventory(self,skis_in_inventory,snowboards_in_inventory):
+        self.skis_in_inventory=skis_in_inventory
+        self.snowboards_in_inventory=snowboards_in_inventory
+
 
